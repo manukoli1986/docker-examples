@@ -1,0 +1,44 @@
+Docker-compose file example
+
+version: '3'
+services:
+  email-converser:
+    image: abc-image
+    ports:
+      - 9999:8080
+  language:
+    image: bc-image
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/app
+  conversation:
+    image: new-image
+    ports:
+      - 5002:5002
+    volumes:
+      - .:/app
+  duckling:
+    image: game-image
+    ports:
+      - 8000:8000
+  trainer:
+    image: webUI
+    ports:
+      - 5001:5001
+    environment:
+      rasanluendpoint: http://language:5000
+      rasacoreendpoint: http://conversation:5002
+      cacheagents: 'false'
+      postgresserver: postgres://,user>:<password>@<dbname>:5432/<schema>
+  conversedb:
+    image: postgres
+    restart: always
+    ports:
+      - 5431:5432
+    environment:
+      POSTGRES_PASSWORD: <password>
+      POSTGRES_DB: <dbname>
+    volumes:
+      - ./chitchat_db_data:/var/lib/postgresql/data
+      - ./init_db_data:/docker-entrypoint-initdb.d
